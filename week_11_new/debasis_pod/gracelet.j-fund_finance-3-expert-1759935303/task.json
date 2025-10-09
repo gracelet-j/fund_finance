@@ -1,0 +1,475 @@
+{
+  "env": "fund_finance",
+  "model_provider": "fireworks",
+  "model": "qwen3-coder-480b-a35b-instruct", 
+  "num_trials": 3,
+  "temperature": 1,
+  "interface_num": 3,
+  "task": {
+    "user_id": "108",
+    "instruction": "You are April Drake (adrake@yahoo.com), a Fund Manager. With the approval of the Compliance Officer, you need to onboard a new accredited investor, Ocean Ltd (registration number: 476499216, contact email: ocean123@gmail.com), whose source of funds is retained earnings. Additionally, create a portfolio and corresponding portfolio holding for this investor in the Harrington Ltd Value Fund, with a quantity of 1,900 and a cost basis of 50.45.",
+    "actions": [
+      {
+        "name": "find_user_entities",
+        "arguments": {
+          "entity_type": "users",
+          "filters": {
+            "first_name": "April",
+            "last_name": "Drake",
+            "email": "adrake@yahoo.com",
+            "role": "fund_manager"
+          }
+        },
+        "output": {
+          "count": 1,
+          "entity_type": "users",
+          "results": [
+            {
+              "created_at": "2025-07-19T03:07:59",
+              "email": "adrake@yahoo.com",
+              "first_name": "April",
+              "last_name": "Drake",
+              "role": "fund_manager",
+              "status": "active",
+              "timezone": "America/Los_Angeles",
+              "updated_at": "2025-07-28T16:41:44",
+              "user_id": "108"
+            }
+          ],
+          "success": true
+        }
+      },
+      {
+          "name": "validate_approval",
+          "arguments": {
+              "action": "investor_onboarding",
+              "requester_email": "adrake@yahoo.com"
+          },
+          "output": {
+          "approval_valid": true,
+          "approved_by": "compliance_officer"
+        }
+      },
+      {
+        "name": "register_investor",
+        "arguments": {
+          "entity_type": "investors",
+          "filters": {
+            "legal_name": "Ocean Ltd",
+            "registration_number": "476499216",
+            "source_of_funds": "retained_earnings",
+            "contact_email": "ocean123@gmail.com",
+            "accreditation_status": "accredited",
+            "compliance_officer_approval" : "True"
+            }
+        },
+        
+        "output": {
+          "accreditation_status": "accredited",
+          "address": null,
+          "contact_email": "ocean123@gmail.com",
+          "country": null,
+          "created_at": "2025-10-01T00:00:00",
+          "date_of_incorporation": null,
+          "investor_id": "176",
+          "name": "Ocean Ltd",
+          "registration_number": 476499216,
+          "source_of_funds": "retained_earnings",
+          "status": "onboarded",
+          "tax_id": null
+        }
+      },
+      {
+        "name": "register_new_audit_trail",
+        "arguments": {
+          "action": "create",
+          "reference_id": "176",
+          "reference_type": "investor"
+        },
+        "output": {
+          "action": "create",
+          "audit_trail_id": "3501",
+          "created_at": "2025-10-01T00:00:00",
+          "field_name": null,
+          "new_value": null,
+          "old_value": null,
+          "reference_id": "176",
+          "reference_type": "investor"
+        }
+      },
+      
+      {
+        "name": "validate_approval",
+        "arguments": {
+           "action": "portfolio_creation",
+           "requester_email": "adrake@yahoo.com"
+          },
+          "output": {
+          "approval_valid": true,
+          "message": "Role 'fund_manager' is directly authorized for action 'portfolio_creation'"
+        }
+      },                  
+      {
+        "name": "find_portfolio_entities",
+        "arguments": {
+          "entity_type": "portfolios",
+          "filters": {
+            "investor_id": "176"
+          }
+        },
+        "output": {
+          "count": 0,
+          "entity_type": "portfolios",
+          "results": [],
+          "success": true
+        }
+      },
+      {
+        "name": "manipulate_portfolio",
+        "arguments": {
+          "action": "create",
+          "portfolio_data": {
+            "investor_id": "176",
+            "fund_manager_approval": true
+          }
+        },
+        "output": {
+          "action": "create",
+          "message": "Portfolio 176 created successfully for investor 176",
+          "portfolio_data": {
+            "created_at": "2025-10-01T12:00:00",
+            "investor_id": "176",
+            "portfolio_id": "176",
+            "status": "active",
+            "updated_at": "2025-10-01T12:00:00"
+          },
+          "portfolio_id": "176",
+          "success": true
+        }
+      },
+      {
+        "name": "register_new_audit_trail",
+        "arguments": {
+          "reference_id": "176",
+          "action": "create",
+          "reference_type": "portfolio"
+        },
+        "output": {
+          "action": "create",
+          "audit_trail_id": "3501",
+          "created_at": "2025-10-01T00:00:00",
+          "field_name": null,
+          "new_value": null,
+          "old_value": null,
+          "reference_id": "176",
+          "reference_type": "portfolio"
+        }
+      },      
+      {
+        "name": "validate_approval",
+        "arguments": {
+          "action": "portfolio_holding_management",
+          "requester_email": "adrake@yahoo.com"
+        },
+        "output": {
+          "approval_valid": true,
+          "message": "Role 'fund_manager' is directly authorized for action 'portfolio_holding_management'"
+        }
+      },
+      {
+        "name": "find_fund_entities",
+        "arguments": {
+          "entity_type": "funds",
+          "filters": {
+            "name": "Harrington Ltd Value Fund",
+            "manager_id": "108"
+          }
+        },
+        "output": {
+          "count": 1,
+          "entity_type": "funds",
+          "results": [
+            {
+              "created_at": "2023-07-31T10:51:03",
+              "fund_id": "21",
+              "fund_type": "exchange_traded_funds",
+              "manager_id": "108",
+              "name": "Harrington Ltd Value Fund",
+              "size": 106301572.46,
+              "status": "open",
+              "updated_at": "2024-12-17T10:24:54"
+            }
+          ],
+          "success": true
+        }
+      },
+      {
+        "name": "manipulate_portfolio_holdings",
+        "arguments": {
+          "action": "create",
+           "holding_data": {
+           "portfolio_id": "176",
+           "fund_id": "21",
+           "quantity": 1900,
+           "cost_basis": 50.45,
+           "fund_manager_approval": true
+          }
+        },
+        "output": {
+          "action": "create",
+          "holding_data": {
+            "cost_basis": 50.45,
+            "created_at": "2025-10-01T12:00:00",
+            "fund_id": "21",
+            "holding_id": "1211",
+            "portfolio_id": "176",
+            "quantity": 1900
+          },
+          "holding_id": "1211",
+          "message": "Portfolio holding 1211 created successfully for portfolio 176 with fund 21",
+          "success": true
+        }
+      },      
+      {
+        "name": "register_new_audit_trail",
+        "arguments": {
+          "reference_id": "1211",
+          "action": "create",
+          "reference_type": "holding"
+        },
+        "output": {
+          "action": "create",
+          "audit_trail_id": "3502",
+          "created_at": "2025-10-01T00:00:00",
+          "field_name": null,
+          "new_value": null,
+          "old_value": null,
+          "reference_id": "1211",
+          "reference_type": "holding"
+        }
+      }
+    ],
+    "edges": [
+      {
+        "from": "instruction",
+        "to": "find_user_entities",
+        "connection": {
+          "output": "first_name,last_name,email,role,entity_type",
+          "input": "filters.first_name,filters.last_name,filters.email,filters.role,entity_type"
+        }
+      },
+      {
+        "from": "find_user_entities",
+        "to": "validate_approval",
+        "connection": {
+          "output": "results[0].email",
+          "input": "requester_email"
+        }
+      },
+      {
+        "from":"instruction",
+        "to":"validate_approval",
+        "connection":{
+            "output":"action",
+            "input":"action"
+        }
+      },
+      {
+        "from": "instruction",
+        "to": "register_investor",
+        "connection": {
+          "output": "entity_type,legal_name,registration_number,source_of_funds,contact_email,accreditation_status",
+          "input": "entity_type,filters.legal_name,filters.registration_number,filters.source_of_funds,filters.contact_email,filters.accreditation_status"
+        }
+      },
+      {
+        "from": "validate_approval",
+        "to": "register_investor",
+        "connection": {
+          "output": "approval_valid",
+          "input": "compliance_officer_approval"
+        }
+      },
+      {
+        "from":"instruction",
+        "to":"register_new_audit_trail",
+        "connection":{
+            "input":" action, reference_type",
+            "output":" action, reference_type"
+        }
+      },
+      {
+        "from": "register_investor",
+        "to": "register_new_audit_trail",
+        "connection": {
+          "output": "investor_id",
+          "input": "reference_id"
+        }
+      },
+      {
+        "from": "find_user_entities",
+        "to": "validate_approval",
+        "connection": {
+          "output": "results[0].email",
+          "input": "requester_email"
+        }
+      },
+      {
+        "from":"instruction",
+        "to":"validate_approval",
+        "connection":{
+            "output":"action",
+            "input":"action"
+        }
+      },
+      {
+        "from": "instruction",
+        "to": "find_portfolio_entities",
+        "connection": {
+          "output": "entity_type",
+          "input": "entity_type"
+        }
+      },
+      {
+        "from": "register_investor",
+        "to": "find_portfolio_entities",
+        "connection": {
+          "output": "investor_id",
+          "input": "investor_id"
+        }
+      },      
+      {
+        "from": "instruction",
+        "to": "manipulate_portfolio",
+        "connection": {
+          "output": "action",
+          "input": "action"          
+        }
+      },       
+      {
+        "from": "register_investor",
+        "to": "manipulate_portfolio",
+        "connection": {
+          "output": "investor_id",
+          "input": "portfolio_data.investor_id"          
+        }
+      },   
+      {
+        "from": "validate_approval",
+        "to": "manipulate_portfolio",
+        "connection": {
+          "output": "approval_valid",
+          "input": "portfolio_data.fund_manager_approval"          
+        }
+      },
+      
+      {
+        "from":"instruction",
+        "to":"register_new_audit_trail",
+        "connection":{
+            "input":" action, reference_type",
+            "output":" action, reference_type"
+        }
+      },
+      {
+        "from": "manipulate_portfolio",
+        "to": "register_new_audit_trail",
+        "connection": {
+          "output": "portfolio_data.portfolio_id",
+          "input": "reference_id"
+        }
+      },
+      {
+        "from": "find_user_entities",
+        "to": "validate_approval",
+        "connection": {
+          "output": "results[0].email",
+          "input": "requester_email"
+        }
+      },
+      {
+        "from":"instruction",
+        "to":"validate_approval",
+        "connection":{
+            "output":"action",
+            "input":"action"
+        }
+      },
+      {
+        "from": "instruction",
+        "to": "find_fund_entities",
+        "connection": {
+          "output": "entity_type,name",
+          "input": "entity_type,filters.name"
+        }
+      },      
+      {
+        "from": "find_user_entities",
+        "to": "find_fund_entities",
+        "connection": {
+          "output": "results[0].user_id",
+          "input": "filters.manager_id"
+        }
+      },
+      {
+        "from": "instruction",
+        "to": "manipulate_portfolio_holdings",
+        "connection": {
+          "output": "action, cost_basis ,quantity",
+          "input": "action, holding_data.cost_basis, holding_data.quantity"
+        }
+      },
+      {
+        "from": "validate_approval",
+        "to": "manipulate_portfolio_holdings",
+        "connection": {
+          "output": "approval_valid",
+          "input": "holding_data.fund_manager_approval"          
+        }
+      },
+      {
+        "from": "manipulate_portfolio",
+        "to": "manipulate_portfolio_holdings",
+        "connection": {
+          "output": "portfolio_id",
+          "input": "holding_data.portfolio_id"
+        }
+      },
+      {
+        "from": "find_fund_entities",
+        "to": "manipulate_portfolio_holdings",
+        "connection": {
+          "output": "results[0].fund_id",
+          "input": "holding_data.fund_id"
+        }
+      },
+      
+      {
+        "from": "instruction",
+        "to": "register_new_audit_trail",
+        "connection": {
+          "output": "action, reference_type",
+          "input": "action, reference_type"
+        }
+      },
+      {
+        "from": "manipulate_portfolio_holdings",
+        "to": "register_new_audit_trail",
+        "connection": {
+          "output": "holding_id",
+          "input": "reference_id"
+        }
+      }      
+    ],
+    "num_edges": 26,
+    "output": [
+      "Harrington Ltd Value Fund",
+      "ocean123@gmail.com",
+      "adrake@yahoo.com",
+      "Harrington Ltd Value Fund",
+      "fund_manager",
+      "Ocean Ltd",
+      "exchange_traded_funds"
+    ]
+  }
+}
