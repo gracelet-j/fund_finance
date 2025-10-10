@@ -7,7 +7,7 @@
   "interface_num": 3,
   "task": {
     "user_id": "108",
-    "instruction": "You are April Drake (adrake@yahoo.com), a Fund Manager. With the approval of the Compliance Officer, you need to onboard a new accredited investor, Ocean Ltd (registration number: 476499216, contact email: ocean123@gmail.com), whose source of funds is retained earnings. Additionally, create a portfolio and corresponding portfolio holding for this investor in the Harrington Ltd Value Fund, with a quantity of 1,900 and a cost basis of 50.45.",
+    "instruction": "You are April Drake (adrake@yahoo.com), a Fund Manager. You need to Onboard Ocean Ltd (Reg. No. 476499216, ocean123@gmail.com), whose funds come from retained earnings, by creating a portfolio and portfolio holding in the Harrington Ltd Value Fund with quantity 1,900 and cost basis 50.45.",
     "actions": [
       {
         "name": "find_user_entities",
