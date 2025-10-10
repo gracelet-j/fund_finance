@@ -7,7 +7,7 @@
   "interface_num": 3,
   "task": {
     "user_id": "43",
-    "instruction": "You are Sarah Campos, a Fund Manager. You are processing an investment from Hodges Ltd (hodges2130@outlook.com)committing 1 million USD to the mutual fund 'Green-Wright Growth Fund'. The commitment record, dated October 25, 2025, is approved by the Compliance Officer, Jose Richards.",    
+    "instruction": "You are Sarah Campos, a Fund Manager, handling an investment from Hodges Ltd (hodges2130@outlook.com), which has committed USD 1,000,000 to the mutual fund “Green-Wright Growth Fund.” The commitment record is dated October 25, 2025.",    
     "actions": [
       {
         "name": "find_user_entities",
