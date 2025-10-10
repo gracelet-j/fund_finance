@@ -7,7 +7,7 @@
   "interface_num": 3,
   "task": {
     "user_id": "43",
-    "instruction": "You are Sarah Campos, a Fund Manager, handling an investment from Hodges Ltd (hodges2130@outlook.com), which has committed USD 1,000,000 to the mutual fund “Green-Wright Growth Fund.” The commitment record is dated October 25, 2025.",    
+    "instruction": "You are Sarah Campos, a Fund Manager, processing a USD 1,000,000 investment from Hodges Ltd (hodges2130@outlook.com) in the Green-Wright Growth Fund. The commitment record dated October 25, 2025 must be registered, and the investor notified upon completion.",    
     "actions": [
       {
         "name": "find_user_entities",
@@ -143,7 +143,54 @@
           "reference_id": "2001",
           "reference_type": "commitment"
         }
+      },
+      {
+        "name": "manipulate_notifications",
+        "arguments": {
+            "action": "create",
+            "notification_data": {
+                "type": "alert",
+                "class": "commitments",
+                "email": "hodges2130@outlook.com"
+            },
+            "notification_id": "2001"
+        },
+        "output": {
+            "action": "create",
+            "message": "Notification 1502 created successfully for hodges2130@outlook.com",
+            "notification_data": {
+              "class": "commitments",
+              "created_at": "2025-10-01T12:00:00",
+              "email": "hodges2130@outlook.com",
+              "notification_id": "1502",
+              "reference_id": null,
+              "sent_at": null,
+              "status": "pending",
+              "type": "alert"
+            },
+            "notification_id": "1502",
+            "success": true
+          }
+        },
+        {
+        "name": "register_new_audit_trail",
+        "arguments": {
+            "action": "create",
+            "reference_type": "commitment",
+            "reference_id": "1502"
+        },
+        "output": {
+          "action": "create",
+          "audit_trail_id": "3502",
+          "created_at": "2025-10-01T00:00:00",
+          "field_name": null,
+          "new_value": null,
+          "old_value": null,
+          "reference_id": "1502",
+          "reference_type": "commitment"
+        }
       }
+      
     ],
     "edges": [
       {
@@ -233,10 +280,42 @@
           "output": "commitment_id",
           "input": "reference_id"
         }
+      },
+      {
+        "from": "register_commitment",
+        "to": "manipulate_notifications",
+        "connection": {
+          "output": "commitment_id",
+          "input": "notification_id"
+        }
+      },
+      {
+        "from": "instruction",
+        "to": "manipulate_notifications",
+        "connection": {
+          "output": "action, type, class, email",
+          "input": "action, notification_data.type, notification_data.class, notification_data.email"
+        }
+      },
+      {
+        "from": "instruction",
+        "to": "register_new_audit_trail",
+        "connection": {
+          "output": "action,reference_type",
+          "input": "action,reference_type"
+        }
+      },
+      {
+        "from": "manipulate_notifications",
+        "to": "register_new_audit_trail",
+        "connection": {
+          "output": "notification_id",
+          "input": "reference_id"
+        }
       }
     ],
     
-    "num_edges": 11,
+    "num_edges": 15,
     
     "output": [
       "sarahcampos144@hotmail.com",
