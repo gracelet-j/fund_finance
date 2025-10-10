@@ -1,0 +1,288 @@
+{
+  "env": "fund_finance",
+  "model_provider": "fireworks",
+  "model": "qwen3-coder-480b-a35b-instruct",
+  "num_trials": 3,
+  "temperature": 1,
+  "interface_num": 3,
+  "task": {
+    "user_id": "11",
+    "instruction": "You are David Nielsen, a Finance Officer. You need to validate and update the NAV record of the fund “Green-Wright Growth Fund” to 345.489 USD as of July 17, 2025, and generate financial reports.",    
+    "actions": [
+      {
+        "name": "find_user_entities",
+        "arguments": {
+          "entity_type": "users",
+          "filters": {
+            "first_name": "David",
+            "last_name": "Nielsen",
+            "role": "finance_officer"
+          }
+        },
+        "output": {
+          "count": 1,
+          "entity_type": "users",
+          "results": [
+            {
+              "created_at": "2022-12-17T13:07:37",
+              "email": "dnielsen@gmail.com",
+              "first_name": "David",
+              "last_name": "Nielsen",
+              "role": "finance_officer",
+              "status": "active",
+              "timezone": "Asia/Tokyo",
+              "updated_at": "2025-04-23T02:41:36",
+              "user_id": "11"
+            }
+          ],
+          "success": true
+        }
+      },
+      {
+        "name": "find_fund_entities",
+        "arguments": {
+          "entity_type": "funds",
+          "filters": {
+            "name": "Green-Wright Growth Fund"
+          }
+        },
+        "output": {
+          "count": 1,
+          "entity_type": "funds",
+          "results": [
+            {
+              "created_at": "2023-04-21T09:04:46",
+              "fund_id": "4",
+              "fund_type": "mutual_funds",
+              "manager_id": "43",
+              "name": "Green-Wright Growth Fund",
+              "size": 111576603.84,
+              "status": "open",
+              "updated_at": "2025-04-27T18:13:30"
+            }
+          ],
+          "success": true
+        }
+      },
+      {
+        "name": "find_valuation_entities",
+        "arguments": {
+          "entity_type": "nav_records",
+          "filters": {
+            "nav_date": "2025-07-17",
+            "fund_id": "4"
+          }
+        },
+        "output": {
+          "count": 1,
+          "entity_type": "nav_records",
+          "results": [
+            {
+              "fund_id": "4",
+              "nav_date": "2025-07-17",
+              "nav_id": "34",
+              "nav_value": 347.1615,
+              "updated_at": "2025-07-30T06:35:15"
+            }
+          ],
+          "success": true
+        }
+      },
+      {
+        "name": "validate_approval",
+        "arguments": {
+          "action": "nav_valuation",
+          "requester_email": "dnielsen@gmail.com"
+        },
+        "output": {
+          "approval_valid": true,
+          "message": "Role 'finance_officer' is directly authorized for action 'nav_valuation'"
+        }
+      },
+      {
+        "name": "manipulate_nav_record",
+        "arguments": {
+          "action": "update",
+          "nav_data": {
+            "fund_manager_approval": true,
+            "finance_officer_approval": true
+          },
+          "nav_id": "34"
+        },
+        "output": {
+          "action": "update",
+          "message": "NAV record 34 updated successfully",
+          "nav_data": {
+            "fund_id": "4",
+            "nav_date": "2025-07-17",
+            "nav_id": "34",
+            "nav_value": 347.1615,
+            "updated_at": "2025-10-01T12:00:00"
+          },
+          "nav_id": "34",
+          "success": true
+        }
+      },
+      {
+        "name": "build_report",
+        "arguments": {
+          "report_type": "financial",
+          "export_period_end": "2025-07-17",
+          "report_date": "2025-07-17",
+          "fund_id": "4",
+          "generated_by": "11"
+        },
+        "output": {
+          "created_at": "2025-10-01T00:00:00",
+          "export_period_end": "\"2025-07-17\"",
+          "fund_id": "4",
+          "generated_by": "11",
+          "investor_id": null,
+          "report_date": "\"2025-07-17\"",
+          "report_id": "1001",
+          "report_type": "financial",
+          "status": "pending"
+        }
+      },
+      {
+        "name": "register_new_audit_trail",
+        "arguments": {
+          "action": "update",
+          "reference_type": "nav",
+          "reference_id": "1001"
+        },
+        "output": {
+          "action": "update",
+          "audit_trail_id": "3501",
+          "created_at": "2025-10-01T00:00:00",
+          "field_name": null,
+          "new_value": null,
+          "old_value": null,
+          "reference_id": "1001",
+          "reference_type": "nav"
+        }
+      }
+
+    ],
+    "edges": [
+      {
+        "from": "instruction",
+        "to": "find_user_entities",
+        "connection": {
+          "output": "first_name,last_name,role,entity_type",
+          "input": "filters.first_name,filters.last_name,filters.role,entity_type"
+        }
+      },
+      {
+        "from": "instruction",
+        "to": "find_fund_entities",
+        "connection": {
+          "output": "entity_type_funds, fund_name",
+          "input": "entity_type, filters.name"
+        }
+      },
+      {
+        "from": "instruction",
+        "to": "find_valuation_entities",
+        "connection": {
+          "output": "entity_type_nav, nav_date",
+          "input": "entity_type, filters.nav_date"
+        }
+      },
+      {
+        "from": "find_fund_entities",
+        "to": "find_valuation_entities",
+        "connection": {
+          "output": "results[0].fund_id",
+          "input": "filters.fund_id"
+        }
+      },
+      {
+        "from": "instruction",
+        "to": "validate_approval",
+        "connection": {
+          "output": "action",
+          "input": "action"
+        }
+      },
+      {
+        "from": "find_user_entities",
+        "to": "validate_approval",
+        "connection": {
+          "output": "results[0].email",
+          "input": "requester_email"
+        }
+      },
+      {
+        "from": "instruction",
+        "to": "manipulate_nav_record",
+        "connection": {
+          "output": "action_update, fund_manager_approval",
+          "input": "action, nav_data.fund_manager_approval"
+        }
+      },
+      {
+        "from": "find_valuation_entities",
+        "to": "manipulate_nav_record",
+        "connection": {
+          "output": "results[0].nav_id",
+          "input": "nav_id"
+        }
+      },
+      {
+        "from": "validate_approval",
+        "to": "manipulate_nav_record",
+        "connection": {
+          "output": "approval_valid",
+          "input": "nav_data.finance_officer_approval"
+        }
+      },
+      {
+        "from": "instruction",
+        "to": "build_report",
+        "connection": {
+          "output": "report_date, export_period_end, report_type",
+          "input": "report_date, export_period_end, report_type"
+          }
+      },
+      {
+        "from": "find_fund_entities",
+        "to": "build_report",
+        "connection": {
+            "output": "results[0].fund_id",
+            "input": "fund_id"                   
+          }
+      },
+      {
+        "from": "find_user_entities",
+        "to": "build_report",
+        "connection": {
+            "output": "results[0].user_id",
+            "input": "generated_by"                    
+          }
+      },
+      {
+        "from": "instruction",
+        "to": "register_new_audit_trail",
+        "connection": {
+          "output": "action,reference_type",
+          "input": "action,reference_type"
+        }
+      },
+      {
+        "from": "build_report",
+        "to": "register_new_audit_trail",
+        "connection": {
+          "output": "report_id",
+          "input": "reference_id"
+        }
+      }
+    ],
+    
+    "num_edges": 14,
+    
+    "output": [
+      
+    ]
+  }
+}
