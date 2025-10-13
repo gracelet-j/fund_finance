@@ -1,0 +1,410 @@
+{
+  "env": "fund_finance",
+  "model_provider": "fireworks",
+  "model": "qwen3-coder-480b-a35b-instruct",
+  "num_trials": 3,
+  "temperature": 1,
+  "interface_num": 3,
+  "task": {
+    "user_id":"114" ,
+    
+    "instruction": "You are Richard Bass, a Fund Manager. You need to verify and approve the trade execution for the fund Travis, Larson and Dodson Value Fund, purchasing 2,500 units of the instrument Kennedy Jackson and Williams Group at 192.45 USD per unit on July 26, 2025, and then generate a performance report for the same date.",    
+    "actions": [
+      {
+        "name": "find_user_entities",
+        "arguments": {
+          "entity_type": "users",
+          "filters": {
+            "first_name": "Richard",
+            "last_name": "Bass",
+            "role": "fund_manager"
+          }
+        },
+        "output": {
+            "count": 1,
+            "entity_type": "users",
+            "results": [
+            {
+                "created_at": "2023-12-02T04:31:19",
+                "email": "richard.bass@yahoo.com",
+                "first_name": "Richard",
+                "last_name": "Bass",
+                "role": "fund_manager",
+                "status": "active",
+                "timezone": "America/Chicago",
+                "updated_at": "2024-07-12T00:58:52",
+                "user_id": "114"
+            }
+            ],
+            "success": true
+        }
+      },
+      {
+        "name": "find_fund_entities",
+        "arguments": {
+          "entity_type": "funds",
+          "filters": {
+            "name": "Travis, Larson and Dodson Value Fund"
+          }
+        },
+        "output": {
+            "count": 1,
+            "entity_type": "funds",
+            "results": [
+            {
+                "created_at": "2024-08-07T22:23:53",
+                "fund_id": "2",
+                "fund_type": "exchange_traded_funds",
+                "manager_id": "114",
+                "name": "Travis, Larson and Dodson Value Fund",
+                "size": 203807634.21,
+                "status": "open",
+                "updated_at": "2025-04-24T04:40:24"
+            }
+            ],
+            "success": true
+        }
+      },
+      {
+        "name": "find_instrument_entities",
+        "arguments": {
+          "entity_type": "instruments",
+          "filters": {
+            "name": "Kennedy Jackson and Williams Group"
+          }
+        },
+        "output": {
+            "count": 1,
+            "entity_type": "instruments",
+            "results": [
+            {
+                "instrument_id": "3",
+                "instrument_type": "bonds",
+                "name": "Kennedy Jackson and Williams Group",
+                "status": "active",
+                "ticker": "HTB8"
+            }
+          ],
+            "success": true
+        }
+      },
+      {
+        "name": "validate_approval",
+        "arguments": {
+            "action": "trade_execution",
+            "requester_email": "richard.bass@yahoo.com"
+        },
+        "output": {
+                "approval_valid": true,
+                "message": "Role 'fund_manager' is directly authorized for action 'trade_execution'"
+            }
+      },
+      {
+        "name": "conduct_trade",
+        "arguments": {
+            "fund_id": "2",
+            "fund_manager_approval": true,
+            "instrument_id": "3",
+            "price": 192.45,
+            "quantity": 2500,
+            "side": "buy",
+            "trade_date": "2025-07-26"
+        },
+        "output": {
+            "message": "Trade 2501 executed successfully",
+            "success": true,
+            "trade_data": {
+            "created_at": "2025-10-01T00:00:00",
+            "fund_id": "2",
+            "instrument_id": "3",
+            "price": 192.45,
+            "quantity": 2500.0,
+            "side": "buy",
+            "status": "executed",
+            "trade_date": "2025-07-26",
+            "trade_id": "2501"
+            },
+            "trade_id": "2501"
+        }
+       },
+       {
+        "name": "register_new_audit_trail",
+        "arguments": {
+            "action": "create",
+            "reference_id": "2501",
+            "reference_type": "trade"
+        },
+        "output": {
+            "action": "create",
+            "audit_trail_id": "3501",
+            "created_at": "2025-10-01T00:00:00",
+            "field_name": null,
+            "new_value": null,
+            "old_value": null,
+            "reference_id": "2501",
+            "reference_type": "trade"
+        }
+      },
+      {
+        "name": "manipulate_nav_record",
+        "arguments": {
+            "nav_data": {
+                "fund_id": "2",
+                "nav_date": "2025-07-26",
+                "nav_value": 192.45,
+                "finance_officer_approval": true
+            },
+            "action": "create"
+        },
+        "output": {
+            "action": "create",
+            "message": "NAV record 1286 created successfully for fund 2 on 2025-07-26",
+            "nav_data": {
+            "fund_id": "2",
+            "nav_date": "2025-07-26",
+            "nav_id": "1286",
+            "nav_value": 192.45,
+            "updated_at": "2025-10-01T12:00:00"
+            },
+            "nav_id": "1286",
+            "success": true
+        }
+      },
+      {
+        "name": "register_new_audit_trail",
+        "arguments": {
+            "action": "create",
+            "reference_id": "1286",
+            "reference_type": "nav"
+        },
+        "output": {
+            "action": "create",
+            "audit_trail_id": "3501",
+            "created_at": "2025-10-01T00:00:00",
+            "field_name": null,
+            "new_value": null,
+            "old_value": null,
+            "reference_id": "1286",
+            "reference_type": "nav"
+        }
+      },
+      {
+        "name": "build_report",
+        "arguments": {
+            "fund_id": "2",
+            "generated_by": "114",
+            "report_date": "2025-07-26",
+            "export_period_end": "2025-07-26",
+            "report_type": "performance"
+        },
+        "output": {
+            "created_at": "2025-10-01T00:00:00",
+            "export_period_end": "2025-07-26",
+            "fund_id": "2",
+            "generated_by": "114",
+            "investor_id": null,
+            "report_date": "2025-07-26",
+            "report_id": "1001",
+            "report_type": "performance",
+            "status": "pending"
+        }
+      },
+      {
+        "name": "register_new_audit_trail",
+        "arguments": {
+            "action": "create",
+            "reference_id": "1001",
+            "reference_type": "report"
+        },
+        "output": {
+            "action": "create",
+            "audit_trail_id": "3502",
+            "created_at": "2025-10-01T00:00:00",
+            "field_name": null,
+            "new_value": null,
+            "old_value": null,
+            "reference_id": "1001",
+            "reference_type": "report"
+        }
+      }
+
+    ],
+    "edges": [
+      {
+        "from": "instruction",
+        "to": "find_user_entities",
+        "connection": {
+          "output": "first_name,last_name,role,entity_type",
+          "input": "filters.first_name,filters.last_name,filters.role,entity_type"
+        }
+      },
+      {
+        "from": "instruction",
+        "to": "find_fund_entities",
+        "connection": {
+          "output": "entity_type, fund_name",
+          "input": "entity_type, filters.name"
+        }
+      },
+      {
+        "from": "instruction",
+        "to": "find_instrument_entities",
+        "connection": {
+          "output": "entity_type, Instrument_name",
+          "input": "entity_type, filters.name"
+        }
+      },
+      {
+        "from": "instruction",
+        "to": "validate_approval",
+        "connection": {
+          "output": "action",
+          "input": "action"
+        }
+      },
+      {
+        "from": "find_user_entities",
+        "to": "validate_approval",
+        "connection": {
+          "output": "results[0].email",
+          "input": "requester_email"
+        }
+      },
+      {
+        "from": "instruction",
+        "to": "conduct_trade",
+        "connection": {
+          "output": "price, quantity, side, trade_date",
+          "input": "price, quantity, side, trade_date"
+        }
+      },
+      {
+        "from": "find_instrument_entities",
+        "to": "conduct_trade",
+        "connection": {
+          "output": "results[0].instrument_id",
+          "input": "instrument_id"
+        }
+      },
+      {
+        "from": "find_fund_entities",
+        "to": "conduct_trade",
+        "connection": {
+          "output": "results[0].fund_id",
+          "input": "fund_id"
+        }
+      },
+      {
+        "from": "validate_approval",
+        "to": "conduct_trade",
+        "connection": {
+          "output": "approval_valid",
+          "input": "fund_manager_approval"
+        }
+      },
+      {
+        "from": "conduct_trade",
+        "to": "register_new_audit_trail",
+        "connection": {
+          "output": "trade_id",
+          "input": "reference_id"
+        }
+      },
+      {
+        "from": "instruction",
+        "to": "register_new_audit_trail",
+        "connection": {
+          "output": "action, reference_type",
+          "input": "action, reference_type"
+        }
+      },
+      {
+        "from": "instruction",
+        "to": "manipulate_nav_record",
+        "connection": {
+          "output": "nav_date, nav_value",
+          "input": "nav_date, nav_value"
+        }
+      },
+      {
+        "from": "find_fund_entities",
+        "to": "manipulate_nav_record",
+        "connection": {
+          "output": "results[0].fund_id",
+          "input": "fund_id"
+        }
+      },
+      {
+        "from": "validate_approval",
+        "to": "manipulate_nav_record",
+        "connection": {
+          "output": "approval_valid",
+          "input": "fund_manager_approval"
+        }
+      },
+      {
+        "from": "manipulate_nav_record",
+        "to": "register_new_audit_trail",
+        "connection": {
+          "output": "nav_id",
+          "input": "reference_id"
+        }
+      },
+      {
+        "from": "instruction",
+        "to": "register_new_audit_trail",
+        "connection": {
+          "output": "action, reference_type",
+          "input": "action, reference_type"
+        }
+      },
+      {
+        "from": "instruction",
+        "to": "build_report",
+        "connection": {
+          "output": "report_date, export_period_end, report_type",
+          "input": "report_date, export_period_end, report_type"
+        }
+      },
+      {
+        "from": "find_fund_entities",
+        "to": "build_report",
+        "connection": {
+          "output": "results[0].fund_id",
+          "input": "fund_id"
+        }
+      },
+      {
+        "from": "find_user_entities",
+        "to": "build_report",
+        "connection": {
+          "output": "results[0].user_id",
+          "input": "generated_by"
+        }
+      },
+      {
+        "from": "build_report",
+        "to": "register_new_audit_trail",
+        "connection": {
+          "output": "report_id",
+          "input": "reference_id"
+        }
+      },
+      {
+        "from": "instruction",
+        "to": "register_new_audit_trail",
+        "connection": {
+          "output": "action, reference_type",
+          "input": "action, reference_type"
+        }
+      }
+            
+    ],
+    
+    "num_edges": 21,
+    
+    "output": [
+      
+    ]
+  }
+}
