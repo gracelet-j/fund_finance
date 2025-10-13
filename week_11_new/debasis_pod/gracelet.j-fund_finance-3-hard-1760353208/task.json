@@ -1,0 +1,340 @@
+
+
+{
+  "env": "fund_finance",
+  "model_provider": "fireworks",
+  "model": "qwen3-coder-480b-a35b-instruct",
+  "num_trials": 3,
+  "temperature": 1,
+  "interface_num": 3,
+  "task": {
+    "user_id":"114" ,    
+    "instruction": "You are Darlene Ross, a Finance Officer.You need to process the redemption request RDM-2089 for investor Hodges Ltd from the Green-Wright Growth Fund, amounting to USD 330885.76 requested on July 26, 2025.Verify Compliance Officer (Danielle Johnson) approval, calculate, and update the redemption status to processed.",    
+    "actions": [        
+      {
+        "name": "find_user_entities",
+        "arguments": {
+          "entity_type": "users",
+          "filters": {
+            "first_name": "Darlene",
+            "last_name": "Ross",
+            "role": "finance_officer"
+          }
+        },
+        "output": {
+            "count": 1,
+            "entity_type": "users",
+            "results": [
+            {
+                "created_at": "2024-11-27T02:48:51",
+                "email": "darleneross306@yahoo.com",
+                "first_name": "Darlene",
+                "last_name": "Ross",
+                "role": "finance_officer",
+                "status": "active",
+                "timezone": "Europe/London",
+                "updated_at": "2025-04-04T17:21:16",
+                "user_id": "102"
+            }
+            ],
+            "success": true
+        }
+      },
+      {
+          "name": "validate_approval",
+          "arguments": {
+              "action": "redemption_processing",
+              "requester_email": "darleneross306@yahoo.com"
+          },
+          "output": {
+            "approval_valid": true,
+            "message": "Role 'finance_officer' is directly authorized for action 'redemption_processing'"
+        }
+      },
+      {
+        "name": "find_user_entities",
+        "arguments": {
+          "entity_type": "users",
+          "filters": {
+            "first_name": "Danielle",
+            "last_name": "Johnson",
+            "role": "compliance_officer"
+          }
+        },
+        "output": {
+            "count": 1,
+            "entity_type": "users",
+            "results": [
+            {
+                "created_at": "2023-10-18T09:04:44",
+                "email": "danielle.johnson@investment.com",
+                "first_name": "Danielle",
+                "last_name": "Johnson",
+                "role": "compliance_officer",
+                "status": "active",
+                "timezone": "America/New_York",
+                "updated_at": "2024-04-25T14:11:38",
+                "user_id": "1"
+            }
+            ],
+            "success": true
+        }
+      },
+      {
+          "name": "validate_approval",
+          "arguments": {
+              "action": "redemption_processing",
+              "requester_email": "danielle.johnson@investment.com"
+          },
+          "output": {
+            "approval_valid": true,
+            "message": "Role 'compliance_officer' is directly authorized for action 'redemption_processing'"
+        }
+      },
+      {
+        "name": "find_fund_entities",
+        "arguments": {
+          "entity_type": "funds",
+          "filters": {
+            "name": "Green-Wright Growth Fund"
+          }
+        },
+        "output": {
+          "count": 1,
+          "entity_type": "funds",
+          "results": [
+            {
+              "created_at": "2023-04-21T09:04:46",
+              "fund_id": "4",
+              "fund_type": "mutual_funds",
+              "manager_id": "43",
+              "name": "Green-Wright Growth Fund",
+              "size": 111576603.84,
+              "status": "open",
+              "updated_at": "2025-04-27T18:13:30"
+            }
+          ],
+          "success": true
+        }
+      },
+      {
+        "name": "find_investor_entities",
+        "arguments": {
+            "entity_type": "investors",
+            "filters": {
+            "name": "Hodges Ltd",
+            "contact_email": "hodges2130@outlook.com"
+            }
+        },
+        "output": {
+            "count": 1,
+            "entity_type": "investors",
+            "results": [
+              {
+                "accreditation_status": "accredited",
+                "address": "50455 Thomas Pines, Knightburgh, GA 23447",
+                "contact_email": "hodges2130@outlook.com",
+                "country": "United States",
+                "created_at": "2023-01-19T13:08:39",
+                "date_of_incorporation": "2001-04-13",
+                "investor_id": "1",
+                "name": "Hodges Ltd",
+                "registration_number": 476496216,
+                "source_of_funds": "external_investment",
+                "status": "onboarded",
+                "tax_id": "996-93-7923"
+              }
+            ],
+            "success": true
+          }
+      },
+      {
+        "name": "find_investment_flow_entities",
+        "arguments": {
+            "entity_type": "redemptions",
+            "filters": {            
+                "redemption_amount": 330885.76
+            }
+        },
+        "output": {
+            "count": 1,
+            "entity_type": "redemptions",
+            "results": [
+            {
+                "processed_date": null,
+                "redemption_amount": 330885.76,
+                "redemption_fee": 33088.576,
+                "redemption_id": "5",
+                "request_date": "2025-05-06",
+                "status": "pending",
+                "subscription_id": "765",
+                "updated_at": "2025-07-31T20:38:45"
+            }
+            ],
+            "success": true
+        }
+      },
+      {
+        "name": "complete_redemption",
+        "arguments": {
+            "processed_date": "2025-07-26",
+            "status": "processed",
+            "finance_officer_approval": true,
+            "redemption_id": "5",
+            "compliance_officer_approval": true
+        },
+        "output": {
+            "processed_date": "2025-07-26",
+            "redemption_amount": 330885.76,
+            "redemption_fee": 33088.576,
+            "redemption_id": "5",
+            "request_date": "2025-05-06",
+            "status": "processed",
+            "subscription_id": "765",
+            "updated_at": "2025-10-01T00:00:00"
+        }
+      },
+      {
+        "name": "register_new_audit_trail",
+        "arguments": {
+            "action": "process",
+            "reference_id": "5",
+            "reference_type": "redemption",
+            "old_value": "pending"
+        },
+        "output": {
+            "action": "process",
+            "audit_trail_id": "3501",
+            "created_at": "2025-10-01T00:00:00",
+            "field_name": null,
+            "new_value": null,
+            "old_value": "pending",
+            "reference_id": "5",
+            "reference_type": "redemption"
+        }
+      }
+
+    ],
+    "edges": [
+      {
+        "from": "instruction",
+        "to": "find_user_entities",
+        "connection": {
+          "output": "first_name,last_name,role,entity_type",
+          "input": "filters.first_name,filters.last_name,filters.role,entity_type"
+        }
+      },      
+      {
+        "from": "instruction",
+        "to": "validate_approval",
+        "connection": {
+          "output": "action",
+          "input": "action"
+        }
+      },
+      {
+        "from": "find_user_entities",
+        "to": "validate_approval",
+        "connection": {
+          "output": "results[0].email",
+          "input": "requester_email"
+        }
+      },
+      {
+        "from": "instruction",
+        "to": "find_user_entities",
+        "connection": {
+          "output": "first_name,last_name,role,entity_type",
+          "input": "filters.first_name,filters.last_name,filters.role,entity_type"
+        }
+      },      
+      {
+        "from": "instruction",
+        "to": "validate_approval",
+        "connection": {
+          "output": "action",
+          "input": "action"
+        }
+      },
+      {
+        "from": "find_user_entities",
+        "to": "validate_approval",
+        "connection": {
+          "output": "results[0].email",
+          "input": "requester_email"
+        }
+      },
+      {
+        "from": "instruction",
+        "to": "find_fund_entities",
+        "connection": {
+          "output": "entity_type, fund_name",
+          "input": "entity_type, filters.name"
+        }
+      },
+      {
+        "from": "instruction",
+        "to": "find_investor_entities",
+        "connection": {
+          "output": "entity_type,name,contact_email",
+          "input": "entity_type,filters.name,filters.contact_email"
+        }
+      },
+      {
+        "from": "instruction",
+        "to": "find_investment_flow_entities",
+        "connection": {
+          "output": "entity_type, redemption_amount",
+          "input": "entity_type, filters.redemption_amount"
+        }
+      },
+      {
+        "from": "instruction",
+        "to": "complete_redemption",
+        "connection": {
+          "output": "processed_date,status,redemption_id",
+          "input": "processed_date,status,redemption_id"
+        }
+      },
+      {
+        "from": "validate_approval",
+        "to": "complete_redemption",
+        "connection": {
+            "output": "approval_valid",
+            "input": "compliance_officer_approval"
+        }
+      },
+      {
+        "from": "validate_approval",
+        "to": "complete_redemption",
+        "connection": {
+            "output": "approval_valid",
+            "input": "finance_officer_approval"
+        }
+      },
+      
+      {
+        "from": "instruction",
+        "to": "register_new_audit_trail",
+        "connection": {
+          "output": "action,reference_type,old_value",
+          "input": "action,reference_type,old_value"
+        }
+      },
+      {
+        "from": "complete_redemption",
+        "to": "register_new_audit_trail",
+        "connection": {
+          "output": "commitment_id",
+          "input": "redemption_id"
+        }
+      }            
+    ],
+    
+    "num_edges": 14,
+    
+    "output": [
+      
+    ]
+  }
+}
