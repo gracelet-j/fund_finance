@@ -1,0 +1,396 @@
+{
+    "env": "fund_finance",
+    "model_provider": "fireworks",
+    "model": "qwen3-coder-480b-a35b-instruct",
+    "num_trials": 3,
+    "temperature": 1,
+    "interface_num": 3,
+    "task": {
+        "user_id": "9",
+        "instruction": "You are Christopher Davis(cdavis@investment.com).You need to process a $150,000 redemption for investor Foster, Smith & Grimes in the White-Smith Balanced Fund on October 15, 2025, and send an email notification to the investor upon completion.",
+        "actions": [
+            {
+                "name": "find_user_entities",
+                "arguments": {
+                    "entity_type": "users",
+                    "filters": {
+                        "email": "cdavis@investment.com"
+                    }
+                },
+                "output": {
+                    "count": 1,
+                    "entity_type": "users",
+                    "results": [
+                        {
+                            "created_at": "2024-02-02T10:50:29",
+                            "email": "cdavis@investment.com",
+                            "first_name": "Christopher",
+                            "last_name": "Davis",
+                            "role": "trader",
+                            "status": "active",
+                            "timezone": "America/New_York",
+                            "updated_at": "2025-05-16T09:06:37",
+                            "user_id": "9"
+                        }
+                    ],
+                    "success": true
+                }
+            },
+            {
+                "name": "validate_approval",
+                "arguments": {
+                    "action": "redemption_processing",
+                    "requester_email": "cdavis@investment.com"
+                },
+                "output": {
+                    "approval_valid": true,
+                    "approved_by": [
+                        "compliance_officer",
+                        "finance_officer"
+                    ]
+                }
+            },
+            {
+                "name": "find_investor_entities",
+                "arguments": {
+                    "entity_type": "investors",
+                    "filters": {
+                        "contact_email": "foster4348@outlook.com"
+                    }
+                },
+                "output": {
+                    "count": 1,
+                    "entity_type": "investors",
+                    "results": [
+                        {
+                            "accreditation_status": "accredited",
+                            "address": "95339 Byrd Stravenue Apt. 104, Johnsonstad, VA 17725",
+                            "contact_email": "foster4348@outlook.com",
+                            "country": "Germany",
+                            "created_at": "2022-10-31T14:27:53",
+                            "date_of_incorporation": "2016-04-03",
+                            "investor_id": "3",
+                            "name": "Foster, Smith and Grimes",
+                            "registration_number": 977867507,
+                            "source_of_funds": "other",
+                            "status": "onboarded",
+                            "tax_id": "945-62-3285"
+                        }
+                    ],
+                    "success": true
+                }
+            },
+            {
+                "name": "find_fund_entities",
+                "arguments": {
+                    "entity_type": "funds",
+                    "filters": {
+                        "name": "White-Smith Balanced Fund"
+                    }
+                },
+                "output": {
+                "count": 1,
+                "entity_type": "funds",
+                "results": [
+                  {
+                    "created_at": "2023-11-20T08:06:41",
+                    "fund_id": "48",
+                    "fund_type": "exchange_traded_funds",
+                    "manager_id": "123",
+                    "name": "White-Smith Balanced Fund",
+                    "size": 395213084.82,
+                    "status": "open",
+                    "updated_at": "2024-05-15T00:42:17"
+                  }
+                ],
+                "success": true
+              }
+            },
+            {
+                "name": "find_investment_flow_entities",
+                "arguments": {
+                    "entity_type": "subscriptions",
+                    "filters": {
+                        "fund_id": "48",
+                        "investor_id": "3"
+                    }
+                },
+                "output": {
+                "count": 1,
+                "entity_type": "subscriptions",
+                "results": [
+                  {
+                    "amount": 2147717.52,
+                    "approval_date": "2025-03-24",
+                    "fund_id": "48",
+                    "investor_id": "29",
+                    "request_assigned_to": "109",
+                    "request_date": "2024-11-02",
+                    "status": "approved",
+                    "subscription_id": "1051",
+                    "updated_at": "2024-12-21T11:37:00"
+                  }
+                ],
+                "success": true
+              }
+            },
+            {
+                "name": "find_investment_flow_entities",
+                "arguments": {
+                    "entity_type": "redemptions",
+                    "filters": {
+                        "subscription_id": "1051"
+                    }
+                },
+                "output": {
+                    "count": 1,
+                    "entity_type": "redemptions",
+                    "results": [
+                        {
+                          "processed_date": "2024-12-27",
+                          "redemption_amount": 233912.1,
+                          "redemption_fee": 23391.210000000003,
+                          "redemption_id": "21",
+                          "request_date": "2024-09-18",
+                          "status": "processed",
+                          "subscription_id": "1051",
+                          "updated_at": "2025-01-26T07:46:00"
+                        }
+                    ],
+                    "success": true
+                }
+            },
+            {
+                "name": "complete_redemption",
+                "arguments": {
+                    "compliance_officer_approval": true,
+                    "finance_officer_approval": true,
+                    "processed_date": "2025-10-15",
+                    "redemption_id": "21",
+                    "status": "processed"
+                },
+                "output": {
+                "processed_date": "2025-10-15",
+                "redemption_amount": 233912.1,
+                "redemption_fee": 23391.210000000003,
+                "redemption_id": "21",
+                "request_date": "2024-09-18",
+                "status": "processed",
+                "subscription_id": "1051",
+                "updated_at": "2025-10-01T00:00:00"
+              }
+            },
+            {
+                "name": "register_new_audit_trail",
+                "arguments": {
+                    "action": "process",
+                    "field_name": "status",
+                    "new_value": "processed",
+                    "old_value": "approved",
+                    "reference_id": "1051",
+                    "reference_type": "redemption"
+                },
+                "output": {
+                "action": "process",
+                "audit_trail_id": "3501",
+                "created_at": "2025-10-01T00:00:00",
+                "field_name": "status",
+                "new_value": "processed",
+                "old_value": "approved",
+                "reference_id": "21",
+                "reference_type": "redemption"
+              }
+            },
+            {
+                "name": "manipulate_notifications",
+                "arguments": {
+                    "action": "create",
+                    "notification_data": {
+                        "email": "foster4348@outlook.com",
+                        "type": "alert",
+                        "class": "investors",
+                        "reference_id": "21"
+                    }
+                },
+                "output": {
+                "action": "create",
+                "message": "Notification 1501 created successfully for foster4348@outlook.com",
+                "notification_data": {
+                  "class": "investors",
+                  "created_at": "2025-10-01T12:00:00",
+                  "email": "foster4348@outlook.com",
+                  "notification_id": "1501",
+                  "reference_id": "21",
+                  "sent_at": null,
+                  "status": "pending",
+                  "type": "alert"
+                },
+                "notification_id": "1501",
+                "success": true
+              }
+            },
+            {
+                "name": "register_new_audit_trail",
+                "arguments": {
+                    "action": "create",
+                    "reference_id": "1501",
+                    "reference_type": "notification"
+                },
+                "output": {
+                "action": "create",
+                "audit_trail_id": "3502",
+                "created_at": "2025-10-01T00:00:00",
+                "field_name": null,
+                "new_value": null,
+                "old_value": null,
+                "reference_id": "1501",
+                "reference_type": "notification"
+              }
+            }
+        ],
+        "outputs": [
+            "672",
+            "3501",
+            "3502",
+            "1501"
+        ],
+        "edges": [
+            {
+                "from": "instruction",
+                "to": "find_user_entities",
+                "connection": {
+                    "output": "entity_type,email",
+                    "input": "entity_type,filters.email"
+                }
+            },
+            {
+                "from": "instruction",
+                "to": "validate_approval",
+                "connection": {
+                    "output": "action,requester_email",
+                    "input": "action,requester_email"
+                }
+            },
+            {
+                "from": "instruction",
+                "to": "find_investor_entities",
+                "connection": {
+                    "output": "entity_type,investor_email",
+                    "input": "entity_type,filters.contact_email"
+                }
+            },
+            {
+                "from": "instruction",
+                "to": "find_fund_entities",
+                "connection": {
+                    "output": "entity_type,fund_name",
+                    "input": "entity_type,filters.name"
+                }
+            },
+            {
+                "from": "instruction",
+                "to": "find_investment_flow_entities",
+                "connection": {
+                    "output": "entity_type",
+                    "input": "entity_type"
+                }
+            },
+            {
+                "from": "find_fund_entities",
+                "to": "find_investment_flow_entities",
+                "connection": {
+                    "output": "results[0].fund_id",
+                    "input": "filters.fund_id"
+                }
+            },
+            {
+                "from": "find_investor_entities",
+                "to": "find_investment_flow_entities",
+                "connection": {
+                    "output": "results[0].investor_id",
+                    "input": "filters.investor_id"
+                }
+            },
+            {
+                "from": "instruction",
+                "to": "complete_redemption",
+                "connection": {
+                    "output": "processed_date, status",
+                    "input": "processed_date, status"
+                }
+            },
+            {
+                "from": "validate_approval",
+                "to": "complete_redemption",
+                "connection": {
+                    "output": "approval_valid,approval_valid",
+                    "input": "compliance_officer_approval,finance_officer_approval"
+                }
+            },
+            {
+                "from": "find_investment_flow_entities",
+                "to": "complete_redemption",
+                "connection": {
+                    "output": "results[0].redemption_id",
+                    "input": "redemption_id"
+                }
+            },
+            {
+                "from": "complete_redemption",
+                "to": "register_new_audit_trail",
+                "connection": {
+                    "output": "redemption_id, status",
+                    "input": "reference_id, new_value"
+                }
+            },
+            {
+                "from": "instruction",
+                "to": "register_new_audit_trail",
+                "connection": {
+                    "output": "action,reference_type, field_name",
+                    "input": "action,reference_type, field_name"
+                }
+            },
+            {
+                "from": "find_investment_flow_entities",
+                "to": "register_new_audit_trail",
+                "connection": {
+                    "output": "results[0].status",
+                    "input": "old_value"
+                }
+            },
+            {
+                "from": "find_investor_entities",
+                "to": "manipulate_notifications",
+                "connection": {
+                    "output": "results[0].contact_email, results[0].investor_id",
+                    "input": "notification_data.email, notification_data.reference_id"
+                }
+            },
+            {
+                "from": "instruction",
+                "to": "manipulate_notifications",
+                "connection": {
+                    "output": "action,type,class",
+                    "input": "action,notification_data.type,notification_data.class"
+                }
+            },
+            {
+                "from": "manipulate_notifications",
+                "to": "register_new_audit_trail",
+                "connection": {
+                    "output": "notification_id",
+                    "input": "reference_id"
+                }
+            }
+        ],
+        "num_edges": 16,
+
+        "output": [
+          "cdavis@investment.com",
+            "foster4348@outlook.com",
+            "exchange_traded_funds",
+            "1051"
+        ]
+  }
+}
