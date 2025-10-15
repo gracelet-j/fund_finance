@@ -54,6 +54,7 @@
         "name": "register_investor",
         "arguments": {
           "entity_type": "investors",
+          #here the arguments are direct, not in nested filters. Please check function signature. 
           "filters": {
             "legal_name": "Ocean Ltd",
             "registration_number": "476499216",
@@ -279,6 +280,7 @@
         "to": "register_investor",
         "connection": {
           "output": "entity_type,legal_name,registration_number,source_of_funds,contact_email,accreditation_status",
+          #once change above, it will be changed here too
           "input": "entity_type,filters.legal_name,filters.registration_number,filters.source_of_funds,filters.contact_email,filters.accreditation_status"
         }
       },
@@ -306,6 +308,7 @@
           "input": "reference_id"
         }
       },
+      #We already have validate approval, these will not be required again, these are duplicate. 
       {
         "from": "find_user_entities",
         "to": "validate_approval",
@@ -314,6 +317,7 @@
           "input": "requester_email"
         }
       },
+      #same for this. 
       {
         "from":"instruction",
         "to":"validate_approval",
@@ -335,6 +339,7 @@
         "to": "find_portfolio_entities",
         "connection": {
           "output": "investor_id",
+          #Input should be filters.investor_id
           "input": "investor_id"
         }
       },      
@@ -362,7 +367,8 @@
           "input": "portfolio_data.fund_manager_approval"          
         }
       },
-      
+
+      #Please delete this node, this is duplicate. 
       {
         "from":"instruction",
         "to":"register_new_audit_trail",
@@ -371,6 +377,7 @@
             "output":" action, reference_type"
         }
       },
+      #Only this will be there, from source to register_new_audit_trail - for reference_id
       {
         "from": "manipulate_portfolio",
         "to": "register_new_audit_trail",
@@ -379,6 +386,7 @@
           "input": "reference_id"
         }
       },
+      #This is again duplicate node. 
       {
         "from": "find_user_entities",
         "to": "validate_approval",
@@ -387,6 +395,7 @@
           "input": "requester_email"
         }
       },
+      #Same for this
       {
         "from":"instruction",
         "to":"validate_approval",
@@ -443,7 +452,7 @@
           "input": "holding_data.fund_id"
         }
       },
-      
+      #delete this node
       {
         "from": "instruction",
         "to": "register_new_audit_trail",
