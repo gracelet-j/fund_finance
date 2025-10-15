@@ -176,6 +176,7 @@
         "name": "register_new_audit_trail",
         "arguments": {
             "action": "create",
+          #here reference type should be notification not commitment
             "reference_type": "commitment",
             "reference_id": "1502"
         },
@@ -297,6 +298,7 @@
           "input": "action, notification_data.type, notification_data.class, notification_data.email"
         }
       },
+      #This node is duplicate, please remove this one. 
       {
         "from": "instruction",
         "to": "register_new_audit_trail",
