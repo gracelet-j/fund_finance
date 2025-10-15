@@ -176,7 +176,7 @@
         "name": "register_new_audit_trail",
         "arguments": {
             "action": "create",
-            "reference_type": "commitment",
+            "reference_type": "notification",
             "reference_id": "1502"
         },
         "output": {
@@ -187,7 +187,7 @@
           "new_value": null,
           "old_value": null,
           "reference_id": "1502",
-          "reference_type": "commitment"
+          "reference_type": "notification"
         }
       }
       
@@ -298,14 +298,6 @@
         }
       },
       {
-        "from": "instruction",
-        "to": "register_new_audit_trail",
-        "connection": {
-          "output": "action,reference_type",
-          "input": "action,reference_type"
-        }
-      },
-      {
         "from": "manipulate_notifications",
         "to": "register_new_audit_trail",
         "connection": {
@@ -315,7 +307,7 @@
       }
     ],
     
-    "num_edges": 15,
+    "num_edges": 14,
     
     "output": [
       "sarahcampos144@hotmail.com",
