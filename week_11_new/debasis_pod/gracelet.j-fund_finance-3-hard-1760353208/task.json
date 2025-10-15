@@ -247,22 +247,6 @@
           "output": "first_name,last_name,role,entity_type",
           "input": "filters.first_name,filters.last_name,filters.role,entity_type"
         }
-      },      
-      {
-        "from": "instruction",
-        "to": "validate_approval",
-        "connection": {
-          "output": "action",
-          "input": "action"
-        }
-      },
-      {
-        "from": "find_user_entities",
-        "to": "validate_approval",
-        "connection": {
-          "output": "results[0].email",
-          "input": "requester_email"
-        }
       },
       {
         "from": "instruction",
@@ -331,7 +315,7 @@
       }            
     ],
     
-    "num_edges": 14,
+    "num_edges": 12,
     
     "output": [
       "danielle.johnson@investment.com",
