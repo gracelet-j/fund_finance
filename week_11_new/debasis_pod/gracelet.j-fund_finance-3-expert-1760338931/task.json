@@ -352,14 +352,6 @@
       },
       {
         "from": "instruction",
-        "to": "register_new_audit_trail",
-        "connection": {
-          "output": "action, reference_type",
-          "input": "action, reference_type"
-        }
-      },
-      {
-        "from": "instruction",
         "to": "build_report",
         "connection": {
           "output": "report_date, export_period_end, report_type",
@@ -389,19 +381,10 @@
           "output": "report_id",
           "input": "reference_id"
         }
-      },
-      {
-        "from": "instruction",
-        "to": "register_new_audit_trail",
-        "connection": {
-          "output": "action, reference_type",
-          "input": "action, reference_type"
-        }
-      }
-            
+      }          
     ],
     
-    "num_edges": 21,
+    "num_edges": 19,
     
     "output": [
       
