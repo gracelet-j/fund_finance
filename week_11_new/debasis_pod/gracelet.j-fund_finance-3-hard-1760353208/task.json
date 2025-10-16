@@ -9,6 +9,8 @@
   "interface_num": 3,
   "task": {
     "user_id":"114" ,    
+    #The instruction is spoon feeding, do not tell "Verify Compliance Officer (Danielle Johnson) approval, calculate, and update the redemption status to processed."
+    
     "instruction": "You are Darlene Ross, a Finance Officer.You need to process the redemption request RDM-2089 for investor Hodges Ltd from the Green-Wright Growth Fund, amounting to USD 330885.76 requested on July 26, 2025.Verify Compliance Officer (Danielle Johnson) approval, calculate, and update the redemption status to processed.",    
     "actions": [        
       {
@@ -80,6 +82,8 @@
             "success": true
         }
       },
+      #Why do we have duplicate validate_approval and output is also different? You should only take approval for the 
+      #main user, which is darleneross306@yahoo.com
       {
           "name": "validate_approval",
           "arguments": {
@@ -148,6 +152,7 @@
             "success": true
           }
       },
+      #This action is not logically possible in the real world. We cannot fetch redemption just based on the amount. 
       {
         "name": "find_investment_flow_entities",
         "arguments": {
@@ -315,7 +320,7 @@
       }            
     ],
     
-    "num_edges": 12,
+    "num_edges": 12, #The task has 12 edges which does not qualify for HARD level task
     
     "output": [
       "danielle.johnson@investment.com",
@@ -324,5 +329,7 @@
       "redemption_processing",
       "Green-Wright Growth Fund"
     ]
+
+  
   }
 }
